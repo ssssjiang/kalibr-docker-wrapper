@@ -16,14 +16,15 @@ RUN apt-get update && apt-get upgrade -y \
                       python-catkin-tools libv4l-dev wget libxml2-dev \
                       libgtk-3-dev python-wxgtk3.0-dev python-pyx \
     && rm -rf /var/lib/apt/lists/* \
-    && pip install python-igraph --upgrade \
+    && pip install python-igraph==0.8.3 --upgrade \
     && pip install pil-compat cairocffi \
     && mkdir -p /ws/src && cd /ws \
     && catkin init && catkin config --extend /opt/ros/melodic 
 COPY ./gui_workaround.patch /tmp/gui_workaround.patch
 
-RUN cd /ws/src && git clone https://github.com/ethz-asl/kalibr.git \
-    && cd kalibr && git apply /tmp/gui_workaround.patch \
+COPY ./Kalibr /ws/src
+
+RUN cd /ws/src && cd kalibr && git apply /tmp/gui_workaround.patch \
     && cd /ws && catkin build -DCMAKE_BUILD_TYPE=Release -j"$(nproc)"
 
 RUN sed -i '$isource "/ws/devel/setup.bash"' /ros_entrypoint.sh
