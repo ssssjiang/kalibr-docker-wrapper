@@ -16,7 +16,7 @@ RUN apt-get update && apt-get upgrade -y \
                       python-catkin-tools libv4l-dev wget libxml2-dev \
                       libgtk-3-dev python-wxgtk3.0-dev python-pyx \
     && rm -rf /var/lib/apt/lists/* \
-    && pip install python-igraph --upgrade \
+    && pip install python-igraph==8.3.0 --upgrade \
     && pip install pil-compat cairocffi \
     && mkdir -p /ws/src && cd /ws \
     && catkin init && catkin config --extend /opt/ros/melodic 
